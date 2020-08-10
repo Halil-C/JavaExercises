@@ -6,7 +6,7 @@ public class Exercise03_34 {
 
 public static void main(String[] args) {
 		
-		Scanner input = new Scanner(System.in);
+	Scanner input = new Scanner(System.in);
 		
 		System.out.println("Enter three points for p0, p1, and p2:");
 		
