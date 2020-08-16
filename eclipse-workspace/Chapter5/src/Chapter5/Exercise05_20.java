@@ -26,7 +26,7 @@ public class Exercise05_20 {
 				if (count % NUMBER_OF_PRIMES_PER_LINE == 0) {
 					System.out.println(number);
 				} else
-					System.out.printf(" %3d  " , number );
+					System.out.printf("%3d  " , number );
 			}
 
 			number++;
