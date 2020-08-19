@@ -16,12 +16,10 @@ public class Exercise06_06 {
 
 		for (int row = 1; row <= n; row++) {
 
-			// empty strings to print == n - row
 			for (int formatter = 1; formatter <= n - row; formatter++) {
 				System.out.printf("%4s", "");
 			}
 
-			// numbers to print == row number
 			for (int column = row; column >= 1; column--) {
 				System.out.printf("%4d", column);
 			}
