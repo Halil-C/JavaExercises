@@ -2,52 +2,101 @@ package Chapter6;
 
 public class Exercise06_15 {
 
-	  public static void main(String[] args){
+	public static void main(String[] args) {
+		double from = 50000;		
+		double to = 60000;		
+		double interval = 50;	
 
-          String s1 = "Taxable Income";
-          String s2 = "Single";
-          String s3 = "Married Joint";
-          String s4 = "Married Separate";
-          String s5 = "Head of house";
+		System.out.println(
+			"\nTaxable      Single      Married Joint       Married        Head of\n" +
+			"Income                   or Qualifying       Separate       a House\n" +
+			"                         Widow(er)\n" +
+			"---------------------------------------------------------------------");
+		for (double taxableIncome = from; 
+			  taxableIncome <= to; taxableIncome += interval) {
+			System.out.printf("%-13.0f", taxableIncome);
+			System.out.printf("%-12d", Math.round(computeTax(0, taxableIncome)));
+			System.out.printf("%-20d", Math.round(computeTax(1, taxableIncome)));
+			System.out.printf("%-15d", Math.round(computeTax(2, taxableIncome)));
+			System.out.printf("%-10d\n", Math.round(computeTax(3, taxableIncome)));
+		}
+	}
 
-          System.out.printf("%-20s%-12s%-4s%21s%16s\n", s1, s2, s3, s4, s5);
-          for (int i = 50000; i <= 60000; i += 50) {
-              System.out.printf("%4d%19.0f%16.0f%16.0f%20.0f\n", i,
-                      computeTax(0, i),
-                      computeTax(1, i),
-                      computeTax(2, i),
-                      computeTax(3, i)
-              );
+	public static double computeTax(int status, double taxableIncome) {
+		double tax, 				
+		       taxRate,			
+		       incomeTaxed, 		
+		       incomeUntaxed, 	
+		       taxAt15Pecent, 	
+		       taxAt25Pecent, 	
+		       taxAt28Pecent, 	
+		       taxAt33Pecent, 	
+		       taxAt35Pecent;	
 
-          }
-      }
+		
+		taxAt15Pecent = taxAt25Pecent = taxAt28Pecent = taxAt33Pecent = 
+		taxAt35Pecent = incomeUntaxed = taxRate = tax = 0.0;
 
-  public static double computeTax(int stats, double taxableIncome) {
+		switch (status) {   
+			case 0 : 
+						taxAt15Pecent = 8351; 
+						taxAt25Pecent = 33951; 
+						taxAt28Pecent = 82251; 
+						taxAt33Pecent = 171551; 
+						taxAt35Pecent = 372951; break;
+			
+			case 1 :
+						taxAt15Pecent = 16701; 
+						taxAt25Pecent = 67901; 
+						taxAt28Pecent = 137051; 
+						taxAt33Pecent = 208851; 
+						taxAt35Pecent = 372951; break;
+			
+			case 2 : 
+						taxAt15Pecent = 8351; 
+						taxAt25Pecent = 33951; 
+						taxAt28Pecent = 68526; 
+						taxAt33Pecent = 104426; 
+						taxAt35Pecent = 186476; break;
 
-      double tax;
-      double[] taxPercent = new double[] { 0.10, 0.15,0.25,0.28,0.33,0.35 }; 
-      double[][] taxRates = new double[][] {
-      {8350,33950, 82250, 171550, 372950},
-      {16700, 67900, 137050, 208850, 372950},
-      {8350, 33950, 68525, 104425, 186475},
-      {11950, 45500, 117450, 190200, 372950}};
+			case 3 : 
+						taxAt15Pecent = 11951; 
+						taxAt25Pecent = 45501; 
+						taxAt28Pecent = 117451; 
+						taxAt33Pecent = 190201; 
+						taxAt35Pecent = 372951;
+		}
 
+		
+		while (taxableIncome >= taxAt15Pecent) {
 
-      if (taxableIncome <= taxRates[stats][0]) return Math.round(taxableIncome * taxPercent[0]);
+			
+			if (taxableIncome >= taxAt35Pecent) {
+				taxRate = 0.35;
+				incomeUntaxed = taxAt35Pecent - 1;
+			}
+			else if (taxableIncome >= taxAt33Pecent) {
+				taxRate = 0.33;
+				incomeUntaxed = taxAt33Pecent - 1;
+			}
+			else if (taxableIncome >= taxAt28Pecent) {
+				taxRate = 0.28;
+				incomeUntaxed = taxAt28Pecent - 1;
+			}
+			else if (taxableIncome >= taxAt25Pecent) {
+				taxRate = 0.25;
+				incomeUntaxed = taxAt25Pecent -1;
+			}
+			else if (taxableIncome >= taxAt15Pecent) {
+				taxRate = 0.15;
+				incomeUntaxed = taxAt15Pecent - 1;
+			}
 
-      tax = taxRates[stats][0] * taxPercent[0];
+			tax += (incomeTaxed = taxableIncome - incomeUntaxed) * taxRate;
+			taxableIncome -= incomeTaxed;	
+		}
 
-      for (int i = 1; i < taxRates[stats].length; i++) {
-
-          if (taxableIncome > taxRates[stats][i]) {
-
-              tax += (taxRates[stats][i] - taxRates[stats][i - 1]) * taxPercent[i];
-
-          } else {
-              return Math.round(tax + (taxableIncome - taxRates[stats][i - 1]) * taxPercent[i]);
-          }
-      }
-      return Math.round(tax + (taxableIncome - taxRates[stats][4]) * taxPercent[5]);
-  }
+		return tax += taxableIncome * 0.10;	
+	}
 	
 }
