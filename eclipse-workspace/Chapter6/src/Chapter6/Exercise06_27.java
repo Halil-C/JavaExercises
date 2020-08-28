@@ -34,7 +34,7 @@ public class Exercise06_27 {
         long reverse = 0;
         while (number != 0) {
 
-            reverse *= 10; // is ignored first iteration
+            reverse *= 10; 
             reverse += number % 10;
             number /= 10;
         }
